@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Users Show</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'semi_restful_users_app/css/showpage.css' %}">
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-sm-7">Edit my Account</div>
+            <div class="col-sm-5">
+                <a href="/quotes">Back</a>
+                <a href="/log_off">Logoff</a>
+            </div>
+
+        </div>
+        <div class="p-3 mb-2 bg-danger text-white">
+                {% if messages %}
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+        </div>
+        <div class="wrapper">
+            <form action="/update" method="post">
+                {% csrf_token %}
+            <h3>First Name: <input type="text" name ="fn" placeholder="this {{ user.first_name }}"> </h3>
+            <h3>Last Name:<input type="text" name="ln" placeholder="this {{ user.last_name }}"></h3>
+            <h3>Email: <input type="text" name="em" placeholder="this {{ user.email }}"></h3>
+            <input type="submit" value="update">
+        </div>
+    </body>
+</html>

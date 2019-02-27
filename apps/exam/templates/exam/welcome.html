@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        #quotes_box{
+            border:2px solid black;
+            margin: 4px;
+        }
+    </style>
+    <title>Welcome Page</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <h4>Welcome! {{request.session.f_name}} {{request.session.l_name}}</h4>
+            </div> 
+            <div class="col-sm-4">     
+                <a href="/myaccount/{{ request.session.">Edit My Account</a>
+                <a type="button" href="/log_off">Logout</a>
+            </div> 
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-7">
+                
+                {% for msg in messageList %}
+                    <div id="quotes_box">
+                        {{ msg.author }} said:
+                        <br>{{ msg.quote }}
+                        <br>Posted by: <a href="/user/{{ msg.user.id }}">{{msg.user.first_name}} {{msg.user.last_name}}</a>
+                        <br>created at: {{ msg.created_at }}
+                        <br>
+                        
+                        <form action='/post_likes' method='POST'></form>
+                            {% csrf_token %}
+                            {{ msg.user.count }} people like this
+                            <input type='hidden' value='{{msg.id}}' name='mesID'>
+                            <input type='submit' name='like_button' value='Like!'>
+                        </form>  
+                    </div>          
+                {% endfor %}
+                
+                <br>
+            </div>
+            <div class="col-sm-5">
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form action="/post_quote" method="POST">
+                        {% csrf_token %}
+                        <h5>Add a Quote!</h5>
+                        <p>Author: <input type="text" name ='author'></p>
+
+                        <p>Quote: <textarea placeholder ='Add a quote' name ='quote_post'></textarea></p>
+                        <input type='submit' value ='submit'>
+                    </form>  
+                </div>
+    
+        </div>
+    </div>
+</body>
+</html>
